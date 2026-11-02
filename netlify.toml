@@ -1,0 +1,18 @@
+# Plain static site: no build step, publish the site/ folder as it is.
+[build]
+  publish = "site"
+
+# Everything the page loads comes from this site. The browser blocks anything else,
+# which backs up "your file never leaves this browser".
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'"
+    Referrer-Policy = "no-referrer"
+    X-Content-Type-Options = "nosniff"
+
+# xmllint-wasm (schema validation, coming later) needs the right type for its .wasm file.
+[[headers]]
+  for = "/vendor/xmllint/*.wasm"
+  [headers.values]
+    Content-Type = "application/wasm"

@@ -1,0 +1,226 @@
+/* ABC Areal */
+@font-face {
+  font-family: 'ABC Areal';
+  src: url('fonts/areal/ABCAreal-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Areal';
+  src: url('fonts/areal/ABCAreal-RegularItalic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Areal';
+  src: url('fonts/areal/ABCAreal-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Areal';
+  src: url('fonts/areal/ABCAreal-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Areal';
+  src: url('fonts/areal/ABCAreal-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Areal';
+  src: url('fonts/areal/ABCAreal-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ABC Areal Mono */
+@font-face {
+  font-family: 'ABC Areal Mono';
+  src: url('fonts/areal-mono/ABCArealMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Areal Mono';
+  src: url('fonts/areal-mono/ABCArealMono-RegularItalic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Areal Mono';
+  src: url('fonts/areal-mono/ABCArealMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Areal Mono';
+  src: url('fonts/areal-mono/ABCArealMono-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Areal Mono';
+  src: url('fonts/areal-mono/ABCArealMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ABC Areal Mono';
+  src: url('fonts/areal-mono/ABCArealMono-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --font-sans: 'ABC Areal', Arial, Helvetica, sans-serif;
+  --font-mono: 'ABC Areal Mono', ui-monospace, monospace;
+  --accent: #ff00ff;
+  --muted: #555;
+  --error: #b3261e;
+  --warning: #8a5300;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* hidden always wins, even over display rules like grid or flex */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  font-family: var(--font-sans);
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+pre,
+code {
+  font-family: var(--font-mono);
+}
+
+small {
+  color: var(--muted);
+}
+
+/* ---------- Steps ---------- */
+
+.step {
+  padding: 2rem 0;
+  border-top: 1px solid currentColor;
+}
+
+/* ---------- Forms (steps 1 and 2) ---------- */
+
+fieldset {
+  display: grid; /* every label inside becomes its own row */
+  gap: 1rem;
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+}
+
+/* one field per line: the name on the left, the input on the right */
+fieldset label {
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+fieldset label small {
+  display: block; /* the hint goes under the field name */
+}
+
+fieldset input:not([type='radio']) {
+  width: 100%;
+  font: inherit;
+  padding: 0.5rem;
+  border: 1px solid #999;
+  border-radius: 4px;
+}
+
+fieldset input[name='volume_doi'],
+fieldset input[name='volume_url'],
+fieldset input[name='issn'],
+fieldset input[name='isbn'] {
+  font-family: var(--font-mono);
+}
+
+/* radio rows: button and text side by side */
+fieldset label.choice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* the browser's own check, shown once someone has typed */
+fieldset input:user-invalid {
+  border-color: var(--error);
+}
+
+/* narrow screens: field name above the input */
+@media (max-width: 30rem) {
+  fieldset label {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}
+
+#fileStatus {
+  margin: 0;
+}
+
+#fileStatus:empty {
+  display: none;
+}
+
+/* what the file contains, under the file field */
+#fileInfo {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+/* a file with problems: the status line in the error color */
+#fileStatus.problem {
+  color: var(--error);
+}
+
+/* ---------- 3. Result ---------- */
+
+#output {
+  max-height: 20rem;
+  overflow: auto;
+}
+
+#output:empty {
+  display: none;
+}
+
+#problems strong {
+  color: var(--error);
+}
+
+#warnings strong {
+  color: var(--warning);
+}
