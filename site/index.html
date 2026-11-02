@@ -11,15 +11,166 @@
       <h1>DRS XML Generator</h1>
       <p>
         This web app takes in XLS files from the Digital Library and creates an
-        XML file ready for submitting to CrossRef to register or update DOI
-        information.
+        XML file ready for submitting to Crossref to register or update DOI
+        information. Upload the <code>.xls</code> file and fill in the
+        conference information. If there are errors generating the XML, you can
+        fix them before uploading.
+      </p>
+      <p>
+        Check this Google Doc for help using this tool:
+        <a
+          href="https://docs.google.com/document/d/1smHk_nhmQZDFU63_c0YOY2UXfevsO26qufnjNSIju2c/edit?usp=sharing"
+          target="_blank"
+          >DRS XML Generator: how to use it</a
+        >
       </p>
     </header>
+
     <main>
-      <p>Here you'll upload your things and then work on it.</p>
-      <input type="file" id="file" accept=".xls,.xlsx" />
-      <pre id="output"></pre>
+      <section id="details" class="step">
+        <form id="conferenceForm">
+          <fieldset>
+            <legend>Batch Revise export</legend>
+            <label>
+              <span>File <small>(.xls from the Digital Library)</small></span>
+              <input
+                type="file"
+                id="file"
+                name="file"
+                accept=".xls,.xlsx"
+                required
+              />
+            </label>
+            <p id="fileStatus" role="status"></p>
+            <ul id="fileInfo" hidden></ul>
+          </fieldset>
+
+          <fieldset>
+            <legend>Conference details</legend>
+
+            <label>
+              <span>Conference name</span>
+              <input name="name" required placeholder="DRS 2026: Edinburgh" />
+            </label>
+            <label>
+              <span>Acronym</span>
+              <input name="acronym" required placeholder="DRS2026" />
+            </label>
+            <label>
+              <span>Volume DOI</span>
+              <input
+                name="volume_doi"
+                required
+                pattern="10\.\d{4,9}/\S+"
+                spellcheck="false"
+                placeholder="10.21606/drs.2026.cv"
+              />
+            </label>
+            <label>
+              <span>Volume URL</span>
+              <input
+                name="volume_url"
+                type="url"
+                required
+                spellcheck="false"
+                placeholder="https://dl.designresearchsociety.org/drs-conference-papers/drs2026/"
+              />
+            </label>
+            <label>
+              <span>ISSN <small>(8 digits, hyphen optional)</small></span>
+              <input
+                name="issn"
+                pattern="\d{4}-?\d{3}[\dXx]"
+                spellcheck="false"
+                placeholder="2398-3132"
+              />
+            </label>
+            <label>
+              <span
+                >Series title <small>(needed if there's an ISSN)</small></span
+              >
+              <input name="series_title" placeholder="Proceedings of DRS" />
+            </label>
+            <label>
+              <span
+                >ISBN <small>(10 or 13 digits, hyphens optional)</small></span
+              >
+              <input
+                name="isbn"
+                pattern="[\dXx\- ]{10,17}"
+                spellcheck="false"
+                placeholder="978-1-912294-68-8"
+              />
+            </label>
+            <label>
+              <span
+                >Proceedings title
+                <small>(leave empty to use the conference name)</small></span
+              >
+              <input name="proceedings_title" />
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>If some rows have problems</legend>
+            <label class="choice">
+              <input type="radio" name="mode" value="strict" checked />
+              Stop and list them
+            </label>
+            <label class="choice">
+              <input type="radio" name="mode" value="skip" />
+              Leave them out and build the XML from the rest
+            </label>
+          </fieldset>
+
+          <button type="submit" id="generate">Generate XML</button>
+        </form>
+      </section>
+
+      <section id="conversionResult" class="step">
+        <h2>Result</h2>
+
+        <p id="summary">
+          Choose the file and fill in the conference details, then press
+          Generate XML.
+        </p>
+        <div id="problems" hidden>
+          <p><strong>✕ Error:</strong> no XML was made.</p>
+          <ul id="problemList"></ul>
+        </div>
+
+        <div id="warnings" hidden>
+          <p>
+            <strong>! Warning:</strong> these rows were left out of the XML.
+          </p>
+          <ul id="warningList"></ul>
+        </div>
+
+        <pre id="output"></pre>
+      </section>
+
+      <section id="downloadXML" class="step" hidden>
+        <h2>Download and deposit</h2>
+
+        <button type="button" id="download">Download XML</button>
+
+        <h3>Now upload it to Crossref</h3>
+        <ol>
+          <li>Check the paper count matches the number published.</li>
+          <li>
+            Log in at
+            <a href="https://doi.crossref.org/servlet/useragent"
+              >doi.crossref.org</a
+            >
+            with the DRS account.
+          </li>
+          <li>Upload the XML to the Crossref system.</li>
+          <li>Wait and review the email from Crossref.</li>
+          <li>If records fail, fix them in the spreadsheet and regenerate.</li>
+        </ol>
+      </section>
     </main>
+
     <script type="module" src="assets/main.js"></script>
   </body>
 </html>
